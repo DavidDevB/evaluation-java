@@ -1,4 +1,39 @@
 package dao;
 
+import utils.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import models.Address;
+
 public class ClientDao {
+
+    private AddressDao addressDao = new AddressDao();
+
+    public void saveWithAddress(String firstName, String lastName, String email, String phoneNumber, Address address) {
+
+        int addressId = addressDao.saveOrGetExisting(address.getStreet(), address.getCity(), address.getCountry(), address.getPostalCode());
+
+        if (addressId == -1) {
+            System.out.println("Failed to save or retrieve address.");
+            return;
+        }
+
+        String query = "INSERT INTO clients (firstName, lastName, email, phoneNumber, address_id) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = DBConnection.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            ps.setString(3, email);
+            ps.setString(4, phoneNumber);
+            ps.setInt(5, addressId);
+            ps.executeUpdate();
+
+            System.out.println("Successfully saved address.");
+
+        } catch (SQLException e) {
+            System.out.println("Error saving client: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
 }
