@@ -9,6 +9,10 @@ import java.sql.SQLException;
 
 public class AddressDao {
 
+    // Sauvegarder une nouvelle adresse
+    // Retourne l'ID de l'adresse créée
+    // ou -1 en cas d'erreur
+
     public int save(String street, String city, String country, int postalCode) {
         String query = "INSERT INTO addresses (street, city, country, postalCode) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
@@ -33,6 +37,11 @@ public class AddressDao {
 
     // Vérifier si une adresse existe déjà (éviter les doublons)
     public Integer findIdByAddress(String street, String city, String country, int postalCode) {
+
+        // Requête pour trouver une adresse existante
+        // Retourne l'ID si trouvée, sinon null
+        // Utilisation de PreparedStatement pour éviter les injections SQL
+
         String query = "SELECT id FROM addresses WHERE street = ? AND city = ? AND country = ? AND postalCode = ?";
 
         try (Connection connection = DBConnection.getConnection();
