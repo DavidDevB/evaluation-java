@@ -8,6 +8,9 @@ import models.Address;
 
 public class ClientDao {
 
+    // Dépendance à AddressDao pour gérer les adresses
+    // Utilisation de l'injection de dépendance pour une meilleure testabilité
+
     private AddressDao addressDao = new AddressDao();
 
     public void saveWithAddress(String firstName, String lastName, String email, String phoneNumber, Address address) {
@@ -28,7 +31,7 @@ public class ClientDao {
             ps.setInt(5, addressId);
             ps.executeUpdate();
 
-            System.out.println("Successfully saved address.");
+            System.out.println("Successfully saved client.");
 
         } catch (SQLException e) {
             System.out.println("Error saving client: " + e.getMessage());
