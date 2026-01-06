@@ -38,5 +38,14 @@ public class Course {
         return price;
     }
 
-
+    @Override
+    public String toString() {
+        return "Course(" +
+                "name: '" + name + '\'' +
+                ", description: '" + description + '\'' +
+                ", duration: " + duration +
+                ", type: '" + type + '\'' +
+                ", price: " + price +
+                ')';
+    }
 }
