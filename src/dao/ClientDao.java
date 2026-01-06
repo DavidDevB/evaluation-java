@@ -14,7 +14,7 @@ public class ClientDao {
     // Dépendance à AddressDao pour gérer les adresses
     // Utilisation de l'injection de dépendance pour une meilleure testabilité
 
-    private final AddressDao addressDao = new AddressDao();
+    private static final AddressDao addressDao = new AddressDao();
 
     public void saveWithAddress(String firstName, String lastName, String email, String phoneNumber, Address address) {
 
@@ -43,7 +43,7 @@ public class ClientDao {
 
     }
 
-    private List<Client> readAll() {
+    public static List<Client> readAll() {
         // Implementation for reading all clients from the database
         List<Client> clients = new ArrayList<>();
         String query = "SELECT * FROM clients";
@@ -71,5 +71,31 @@ public class ClientDao {
             System.out.println("Error reading clients: " + e.getMessage());
         }
         return clients;
+    }
+
+    public static Client read(String email) {
+        // Implementation for reading a single client by email from the database
+        String query = "SELECT * FROM clients WHERE email = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, email);
+            var rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String phoneNumber = rs.getString("phoneNumber");
+                int addressId = rs.getInt("fk_address_id");
+
+                Address address = addressDao.read(addressId);
+                return new Client(firstName, lastName, email, address, phoneNumber);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error reading client: " + e.getMessage());
+        }
+        return null;
     }
 }

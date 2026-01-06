@@ -1,14 +1,15 @@
 package models;
 
 import java.util.List;
+import dao.ClientDao;
 
 public class Cart {
 
     private Client client;
     private final List<Course> articles;
 
-    public Cart(Client client, List<Course> articles) {
-        this.client = client;
+    public Cart(String email, List<Course> articles) {
+        this.client = ClientDao.read(email);
         this.articles = articles;
     }
 

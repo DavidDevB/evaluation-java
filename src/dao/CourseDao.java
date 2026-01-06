@@ -61,4 +61,29 @@ public class CourseDao {
         }
         return null;
     }
+
+    public Course read(String name) {
+
+        String query = "SELECT * FROM courses WHERE name = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String description = rs.getString("description");
+                int duration = rs.getInt("duration");
+                String type = rs.getString("type");
+                int price = rs.getInt("price");
+
+                return new Course(name, description, duration, type, price);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error reading course: " + e.getMessage());
+        }
+        return null;
+    }
 }

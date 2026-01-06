@@ -82,7 +82,7 @@ public class AddressDao {
     }
 
     public Address read(int addressId) {
-        String query = "SELECT * FROM addresses WHERE id = ?";
+        String query = "SELECT * FROM addresses WHERE address_id = ?";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {

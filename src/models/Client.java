@@ -58,4 +58,15 @@ public class Client {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    @Override
+    public String toString() {
+        return "Client(" +
+                "firstName:'" + firstName + '\'' +
+                ", lastName:'" + lastName + '\'' +
+                ", email:'" + email + '\'' +
+                ", address:" + address +
+                ", phoneNumber:'" + phoneNumber + '\'' +
+                ')';
+    }
 }
