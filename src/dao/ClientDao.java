@@ -22,7 +22,7 @@ public class ClientDao {
             return;
         }
 
-        String query = "INSERT INTO clients (firstName, lastName, email, phoneNumber, address_id) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO clients (firstName, lastName, email, phoneNumber, fk_address_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, firstName);
             ps.setString(2, lastName);
