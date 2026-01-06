@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import models.Address;
 
 
 public class AddressDao {
@@ -78,6 +79,31 @@ public class AddressDao {
         // 2. Si elle n'existe pas, la créer
         System.out.println("➕ Création d'une nouvelle adresse...");
         return save(street, city, country, postalCode);
+    }
+
+    public Address read(int addressId) {
+        String query = "SELECT * FROM addresses WHERE id = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setInt(1, addressId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String street = rs.getString("street");
+                String city = rs.getString("city");
+                String country = rs.getString("country");
+                int postalCode = rs.getInt("postalCode");
+
+                return new Address(country, city, postalCode, street);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error reading address: " + e.getMessage());
+        }
+
+        return null;
     }
 
 }
