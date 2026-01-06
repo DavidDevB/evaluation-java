@@ -52,7 +52,7 @@ public class Main {
             });
             while(true) {
                 System.out.println("--------------");
-                System.out.println("Choose your client by entering your email:");
+                System.out.println("Choose your client by entering his/her email:");
                 String email = scanner.nextLine();
                 System.out.println("Would you like to add courses to the shopping cart? (yes/no)");
                 System.out.println("--------------");
@@ -61,23 +61,36 @@ public class Main {
                 if (addToCartResponse.equalsIgnoreCase("yes")) {
                     Cart cart = new Cart(email, new ArrayList<>());
                     while (true) {
-                        System.out.println("Choose your course by entering its name:");
-                        String courseName = scanner.nextLine();
-                        CourseDao courseDao1 = new CourseDao();
-                        Course courseToAdd = courseDao1.read(courseName);
-                        cart.addArticle(courseToAdd);
-                        System.out.println("Course " + courseName + " added to the shopping cart!");
-                        System.out.println("--------------");
-                        System.out.println("Your shopping cart contains:");
-                        System.out.println("--------------");
-                        System.out.println(Objects.requireNonNull(ClientDao.read(email)).getFirstName() + " " + Objects.requireNonNull(ClientDao.read(email)).getLastName());
-                        cart.getArticles().forEach(course -> {
-                            System.out.println(course);
+                        System.out.println("Would you like to add or remove a course to/from the shopping cart? (add/remove/no)");
+                        String response = scanner.nextLine().toLowerCase();
+                        if (response.equalsIgnoreCase("add")) {
+                            String courseName = scanner.nextLine();
+                            CourseDao courseDao1 = new CourseDao();
+                            Course courseToAdd = courseDao1.read(courseName);
+                            cart.addArticle(courseToAdd);
+                            System.out.println("Course " + courseName + " added to the shopping cart!");
                             System.out.println("--------------");
-                        });
-                        System.out.println("Would you like to add another course to the shopping cart? (yes/no)");
-                        String addAnotherResponse = scanner.nextLine().toLowerCase();
-                        if (addAnotherResponse.equalsIgnoreCase("no")) {
+                            System.out.println("Your shopping cart contains:");
+                            System.out.println("--------------");
+                            System.out.println(Objects.requireNonNull(ClientDao.read(email)).getFirstName() + " " + Objects.requireNonNull(ClientDao.read(email)).getLastName());
+                            cart.getArticles().forEach(course -> {
+                                System.out.println(course);
+                                System.out.println("--------------");
+                            });
+                        } else if (response.equalsIgnoreCase("remove")) {
+                            System.out.println("Enter the name of the course to remove:");
+                            String courseNameToRemove = scanner.nextLine();
+                            cart.removeArticle(courseNameToRemove);
+                            System.out.println("Course " + courseNameToRemove + " removed from the shopping cart!");
+                            System.out.println("--------------");
+                            System.out.println("Your shopping cart now contains:");
+                            System.out.println("--------------");
+                            System.out.println(Objects.requireNonNull(ClientDao.read(email)).getFirstName() + " " + Objects.requireNonNull(ClientDao.read(email)).getLastName());
+                            cart.getArticles().forEach(course -> {
+                                System.out.println(course);
+                                System.out.println("--------------");
+                            });
+                        } else {
                             break;
                         }
                     }
