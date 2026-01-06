@@ -1,14 +1,19 @@
 package models;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class Cart {
 
+    private Client client;
     private final List<Course> articles;
 
-    public Cart(List<Course> articles) {
+    public Cart(Client client, List<Course> articles) {
+        this.client = client;
         this.articles = articles;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public void addArticle(Course course) {
