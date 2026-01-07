@@ -1,4 +1,4 @@
-package app2;
+package app3;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -55,43 +55,59 @@ public class Main {
             while(true) {
                 System.out.println("--------------");
                 System.out.println("Choose your client by entering his/her email:");
+                ClientDao clientDao = new ClientDao();
                 String email = scanner.nextLine();
-                System.out.println("Would you like to add courses to the shopping cart? (yes/no)");
-                System.out.println("--------------");
-
-                String addToCartResponse = scanner.nextLine();
-                if (addToCartResponse.equalsIgnoreCase("yes")) {
-                    Cart cart = new Cart(email, new ArrayList<>());
+                if (ClientDao.read(email) == null) {
+                    System.out.println("Client with email " + email + " not found. Please try again.");
+                } else {
+                    System.out.println("Client " + Objects.requireNonNull(ClientDao.read(email)).getFirstName() + " " + Objects.requireNonNull(ClientDao.read(email)).getLastName() + " selected.");
+                    System.out.println("--------------");
                     while (true) {
                         System.out.println("Would you like to add or remove a course to/from the shopping cart? (add/remove/no)");
                         String response = scanner.nextLine().toLowerCase();
                         if (response.equalsIgnoreCase("add")) {
+                            System.out.println("Enter course name:");
                             String courseName = scanner.nextLine();
-                            CourseDao courseDao1 = new CourseDao();
-                            Course courseToAdd = courseDao1.read(courseName);
-                            cart.addArticle(courseToAdd);
+                            int clientId = clientDao.getIdByEmail(email);
+                            System.out.println("Email: " + email);
+                            System.out.println("Client ID trouvé: " + clientId);
+                            int courseId = courseDao.getIdByName(courseName);
+                            System.out.println("Course name: " + courseName);
+                            System.out.println("Course ID trouvé: " + courseId);
+                            ShoppingCartDao.save(clientId, courseId);
                             System.out.println("Course " + courseName + " added to the shopping cart!");
                             System.out.println("--------------");
                             System.out.println("Your shopping cart contains:");
                             System.out.println("--------------");
                             System.out.println(Objects.requireNonNull(ClientDao.read(email)).getFirstName() + " " + Objects.requireNonNull(ClientDao.read(email)).getLastName());
-                            cart.getArticles().forEach(course -> {
-                                System.out.println(course);
-                                System.out.println("--------------");
-                            });
+
+                            int[] coursesIds = ShoppingCartDao.readAllCoursesIds();
+                            for (int id : coursesIds) {
+                                Course course = CourseDao.readById(id);
+                                    if (course != null) {
+                                    System.out.println(course);
+                                    System.out.println("--------------");
+                                    }
+                                }
                         } else if (response.equalsIgnoreCase("remove")) {
                             System.out.println("Enter the name of the course to remove:");
                             String courseNameToRemove = scanner.nextLine();
-                            cart.removeArticle(courseNameToRemove);
+                            int courseIdToRemove = courseDao.getIdByName(courseNameToRemove);
+                            int clientId = clientDao.getIdByEmail(email);
+                            ShoppingCartDao.removeFromCart(clientId, courseIdToRemove);
                             System.out.println("Course " + courseNameToRemove + " removed from the shopping cart!");
                             System.out.println("--------------");
                             System.out.println("Your shopping cart now contains:");
                             System.out.println("--------------");
                             System.out.println(Objects.requireNonNull(ClientDao.read(email)).getFirstName() + " " + Objects.requireNonNull(ClientDao.read(email)).getLastName());
-                            cart.getArticles().forEach(course -> {
-                                System.out.println(course);
-                                System.out.println("--------------");
-                            });
+                            int[] coursesIds = ShoppingCartDao.readAllCoursesIds();
+                            for (int id : coursesIds) {
+                                Course course = CourseDao.readById(id);
+                                if (course != null) {
+                                    System.out.println(course);
+                                    System.out.println("--------------");
+                                }
+                            }
                         } else {
                             break;
                         }

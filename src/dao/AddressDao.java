@@ -43,7 +43,7 @@ public class AddressDao {
         // Retourne l'ID si trouvée, sinon null
         // Utilisation de PreparedStatement pour éviter les injections SQL
 
-        String query = "SELECT id FROM addresses WHERE street = ? AND city = ? AND country = ? AND postalCode = ?";
+        String query = "SELECT address_id FROM addresses WHERE street = ? AND city = ? AND country = ? AND postalCode = ?";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {

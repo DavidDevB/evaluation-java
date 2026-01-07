@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Scanner;
+
 public class User {
 
     private String username;
@@ -8,8 +10,10 @@ public class User {
         this.username = username;
     }
 
-    public void makeOrder() {
+    public String authentify() {
         // Implementation for making an order
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 
     // Getter

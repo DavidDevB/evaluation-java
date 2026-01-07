@@ -98,4 +98,24 @@ public class ClientDao {
         }
         return null;
     }
+
+    public int getIdByEmail(String email) {
+
+        String query = "SELECT client_id FROM clients WHERE email = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, email);
+            var rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("client_id");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error getting client ID: " + e.getMessage());
+        }
+        return -1;
+    }
 }
