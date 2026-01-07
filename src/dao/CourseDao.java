@@ -13,9 +13,11 @@ public class CourseDao {
 
     public List<Course> readAll() {
 
-        // Requête pour lire tous les cours depuis la base de données
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne une liste de cours
+        /**
+         * Requête pour lire tous les cours depuis la base de données
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Retourne une liste d'objets Course
+         */
 
         String query = "SELECT * FROM courses";
 
@@ -48,9 +50,11 @@ public class CourseDao {
 
     public Course read(String name) {
 
-        // Requête pour lire un cours spécifique par son nom depuis la base de données
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne un objet Course
+        /**
+         * Requête pour lire un cours spécifique par son nom depuis la base de données
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Retourne un objet Course
+         */
 
         String query = "SELECT * FROM courses WHERE name = ?";
 
@@ -77,9 +81,11 @@ public class CourseDao {
 
     public int getIdByName(String name) {
 
-        // Requête pour obtenir l'ID d'un cours par son nom depuis la base de données
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne l'ID du cours
+        /**
+         * Requête pour obtenir l'ID d'un cours spécifique par son nom depuis la base de données
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Retourne l'ID du cours en tant qu'entier
+         */
 
         String query = "SELECT course_id FROM courses WHERE name = ?";
 
@@ -101,9 +107,11 @@ public class CourseDao {
 
     public static Course readById(int id) {
 
-        // Requête pour lire un cours spécifique par son ID depuis la base de données
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne un objet Course
+        /**
+         * Requête pour lire un cours spécifique par son ID depuis la base de données
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Retourne un objet Course
+         */
 
         String query = "SELECT * FROM courses WHERE course_id = ?";
 

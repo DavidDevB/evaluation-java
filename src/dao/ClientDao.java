@@ -12,44 +12,17 @@ import java.sql.ResultSet;
 
 public class ClientDao {
 
-    // Dépendance à AddressDao pour gérer les adresses
-    // Utilisation de l'injection de dépendance pour une meilleure testabilité
-
     private static final AddressDao addressDao = new AddressDao();
-
-    public void saveWithAddress(String firstName, String lastName, String email, String phoneNumber, Address address) {
-
-        int addressId = addressDao.saveOrGetExisting(address.getStreet(), address.getCity(), address.getCountry(), address.getPostalCode());
-
-        if (addressId == -1) {
-            System.out.println("Failed to save or retrieve address.");
-            return;
-        }
-
-        String query = "INSERT INTO clients (firstName, lastName, email, phoneNumber, fk_address_id) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = DBConnection.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, firstName);
-            ps.setString(2, lastName);
-            ps.setString(3, email);
-            ps.setString(4, phoneNumber);
-            ps.setInt(5, addressId);
-            ps.executeUpdate();
-
-            System.out.println("Successfully saved client.");
-
-        } catch (SQLException e) {
-            System.out.println("Error saving client: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-    }
 
     public static List<Client> readAll() {
 
-        // Implementation for reading all clients from the database
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne une liste de clients
-        // @return List<Client>
+        /**
+         * Implementation for reading all clients from the database
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Retourne une liste vide si aucun client n'est trouvé
+         * Retourne une liste de clients si trouvés
+         * @return List<Client>
+         */
 
         List<Client> clients = new ArrayList<>();
         String query = "SELECT * FROM clients";
@@ -81,12 +54,14 @@ public class ClientDao {
 
     public static Client read(String email) {
 
-        // Implementation for reading a single client by email from the database
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne null si le client n'est pas trouvé
-        // Retourne un objet Client si trouvé
-        // @param email L'email du client à rechercher
-        // @return Client ou null
+        /**
+         * Implementation for reading a client by email from the database
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Retourne null si le client n'est pas trouvé
+         * Retourne le client si trouvé
+         * @param email String
+         * @return Client
+         */
 
         String query = "SELECT * FROM clients WHERE email = ?";
 
@@ -114,10 +89,14 @@ public class ClientDao {
 
     public int getIdByEmail(String email) {
 
-        // Implementation for getting client ID by email
-        // Returns -1 if not found
-        // or an error occurs
-        // Otherwise returns the client ID
+        /**
+         * Implementation for getting a client ID by email from the database
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Retourne -1 si le client n'est pas trouvé
+         * Retourne l'ID du client si trouvé
+         * @param email String
+         * @return int
+         */
 
         String query = "SELECT client_id FROM clients WHERE email = ?";
 

@@ -10,11 +10,17 @@ import models.Address;
 
 public class AddressDao {
 
-    // Sauvegarder une nouvelle adresse
-    // Retourne l'ID de l'adresse créée
-    // ou -1 en cas d'erreur
-
     public int save(String street, String city, String country, int postalCode) {
+
+        /**
+         * Sauvegarde une nouvelle adresse dans la base de données.
+         * @param street Le nom de la rue
+         * @param city La ville
+         * @param country Le pays
+         * @param postalCode Le code postal
+         * @return L'ID de l'adresse nouvellement créée, ou -1 en cas d'erreur
+         */
+
         String query = "INSERT INTO addresses (street, city, country, postalCode) VALUES (?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, street);
@@ -39,9 +45,14 @@ public class AddressDao {
     // Vérifier si une adresse existe déjà (éviter les doublons)
     public Integer findIdByAddress(String street, String city, String country, int postalCode) {
 
-        // Requête pour trouver une adresse existante
-        // Retourne l'ID si trouvée, sinon null
-        // Utilisation de PreparedStatement pour éviter les injections SQL
+        /**
+         * Vérifie si une adresse existe déjà dans la base de données.
+         * @param street Le nom de la rue
+         * @param city La ville
+         * @param country Le pays
+         * @param postalCode Le code postal
+         * @return L'ID de l'adresse si elle existe, sinon null
+         */
 
         String query = "SELECT address_id FROM addresses WHERE street = ? AND city = ? AND country = ? AND postalCode = ?";
 
@@ -69,17 +80,16 @@ public class AddressDao {
 
     public int saveOrGetExisting(String street, String city, String country, int postalCode) {
 
-        // Étapes :
-        // 1. Vérifier si l'adresse existe
-        // 2. Si elle n'existe pas, la créer
-        // Retourne l'ID de l'adresse existante ou nouvellement créée
-        // Affiche des messages dans la console pour indiquer l'action effectuée
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne l'ID de l'adresse
-        // ou -1 en cas d'erreur
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne l'ID de l'adresse
-        // ou -1 en cas d'erreur.
+        /*
+          Vérifie si une adresse existe déjà dans la base de données.
+          Si elle existe, retourne son ID.
+          Sinon, crée une nouvelle adresse et retourne son ID.
+          @param street Le nom de la rue
+         * @param city La ville
+         * @param country Le pays
+         * @param postalCode Le code postal
+         * @return L'ID de l'adresse existante ou nouvellement créée
+         */
 
         Integer existingId = findIdByAddress(street, city, country, postalCode);
 
@@ -94,10 +104,11 @@ public class AddressDao {
 
     public Address read(int addressId) {
 
-        // Implémentation pour lire une adresse par son ID depuis la base de données
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne null si l'adresse n'est pas trouvée
-        // @return Address ou null
+        /*
+         * Récupère une adresse depuis la base de données en utilisant son ID.
+         * @param addressId L'ID de l'adresse à récupérer
+         * @return L'objet Address correspondant, ou null si non trouvé
+         */
 
         String query = "SELECT * FROM addresses WHERE address_id = ?";
 

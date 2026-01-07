@@ -10,20 +10,15 @@ import java.util.ArrayList;
 
 public class ShoppingCartDao {
 
-    // Sauvegarder un cours dans le panier d'un client
-    // Crée le panier s'il n'existe pas
-    // Ajoute le cours au panier
-    // Utilisation de PreparedStatement pour éviter les injections SQL
-
     public static void save(int clientId, int courseId) {
 
-        // Requête pour créer un panier s'il n'existe pas déjà
-        // Requête pour obtenir l'ID du panier
-        // Requête pour ajouter le cours au panier
-        // Retourne void
-        // Utilisation de transactions pour garantir la cohérence des données
-        // Gestion des exceptions pour capturer les erreurs potentielles
-        // Fermeture appropriée des ressources (Connection, PreparedStatement, ResultSet)
+        /**
+         * Implémentation pour sauvegarder un cours dans le panier d'un client
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Vérifie si le panier existe déjà pour le client, sinon le crée
+         * Ajoute le cours au panier dans la table cart_courses
+         * Retourne void
+         */
 
         String cartQuery = "INSERT INTO shopping_carts (fk_client_id) SELECT ? WHERE NOT EXISTS (SELECT 1 FROM shopping_carts WHERE fk_client_id = ?)";
 
@@ -66,9 +61,12 @@ public class ShoppingCartDao {
 
     public static int[] readAllCoursesIds() {
 
-        // Implémentation pour lire tous les IDs des cours dans le panier
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Retourne un tableau d'entiers avec les IDs des cours dans le panier
+        /**
+         * Implémentation pour lire tous les IDs des cours dans le panier
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Récupère tous les IDs des cours depuis la table cart_courses
+         * Retourne un tableau d'entiers contenant les IDs des cours
+         */
 
         String query = "SELECT * FROM cart_courses";
 
@@ -93,11 +91,13 @@ public class ShoppingCartDao {
 
     public static void removeFromCart(int clientId, int courseId) {
 
-        // Implémentation pour supprimer un cours du panier d'un client
-        // Utilisation de PreparedStatement pour éviter les injections SQL
-        // Supprime l'entrée correspondante dans la table cart_courses
-        // en fonction de l'ID du panier et de l'ID du cours
-        // Retourne void
+        /**
+         * Implémentation pour supprimer un cours du panier d'un client
+         * Utilisation de PreparedStatement pour éviter les injections SQL
+         * Récupère l'ID du panier du client
+         * Supprime le cours du panier dans la table cart_courses
+         * Retourne void
+         */
 
         String getCartIdQuery = "SELECT cart_id FROM shopping_carts WHERE fk_client_id = ?";
         int cartId = -1;
