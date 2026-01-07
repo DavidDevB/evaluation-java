@@ -8,6 +8,7 @@ import models.Address;
 import models.Client;
 import java.util.List;
 import java.util.ArrayList;
+import java.sql.ResultSet;
 
 public class ClientDao {
 
@@ -44,14 +45,19 @@ public class ClientDao {
     }
 
     public static List<Client> readAll() {
+
         // Implementation for reading all clients from the database
+        // Utilisation de PreparedStatement pour éviter les injections SQL
+        // Retourne une liste de clients
+        // @return List<Client>
+
         List<Client> clients = new ArrayList<>();
         String query = "SELECT * FROM clients";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
 
-            var rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 // Récupérer les données de chaque client
@@ -74,14 +80,21 @@ public class ClientDao {
     }
 
     public static Client read(String email) {
+
         // Implementation for reading a single client by email from the database
+        // Utilisation de PreparedStatement pour éviter les injections SQL
+        // Retourne null si le client n'est pas trouvé
+        // Retourne un objet Client si trouvé
+        // @param email L'email du client à rechercher
+        // @return Client ou null
+
         String query = "SELECT * FROM clients WHERE email = ?";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
 
             ps.setString(1, email);
-            var rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 String firstName = rs.getString("firstName");
@@ -101,13 +114,18 @@ public class ClientDao {
 
     public int getIdByEmail(String email) {
 
+        // Implementation for getting client ID by email
+        // Returns -1 if not found
+        // or an error occurs
+        // Otherwise returns the client ID
+
         String query = "SELECT client_id FROM clients WHERE email = ?";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
 
             ps.setString(1, email);
-            var rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 return rs.getInt("client_id");

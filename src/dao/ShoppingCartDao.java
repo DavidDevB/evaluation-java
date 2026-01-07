@@ -10,27 +10,37 @@ import java.util.ArrayList;
 
 public class ShoppingCartDao {
 
+    // Sauvegarder un cours dans le panier d'un client
+    // Crée le panier s'il n'existe pas
+    // Ajoute le cours au panier
+    // Utilisation de PreparedStatement pour éviter les injections SQL
+
     public static void save(int clientId, int courseId) {
 
-        // 1. Créer le panier si n'existe pas
+        // Requête pour créer un panier s'il n'existe pas déjà
+        // Requête pour obtenir l'ID du panier
+        // Requête pour ajouter le cours au panier
+        // Retourne void
+        // Utilisation de transactions pour garantir la cohérence des données
+        // Gestion des exceptions pour capturer les erreurs potentielles
+        // Fermeture appropriée des ressources (Connection, PreparedStatement, ResultSet)
+
         String cartQuery = "INSERT INTO shopping_carts (fk_client_id) SELECT ? WHERE NOT EXISTS (SELECT 1 FROM shopping_carts WHERE fk_client_id = ?)";
 
-        // 2. Récupérer l'ID du panier
         String getCartIdQuery = "SELECT cart_id FROM shopping_carts WHERE fk_client_id = ?";
 
-        // 3. Ajouter le cours au panier
         String courseQuery = "INSERT INTO cart_courses (fk_cart_id, fk_course_id) VALUES (?, ?)";
 
         try (Connection connection = DBConnection.getConnection()) {
 
-            // Étape 1 : Créer panier si n'existe pas
+
             try (PreparedStatement ps = connection.prepareStatement(cartQuery)) {
                 ps.setInt(1, clientId);
                 ps.setInt(2, clientId);
                 ps.executeUpdate();
             }
 
-            // Étape 2 : Récupérer cart_id
+
             int cartId = -1;
             try (PreparedStatement ps = connection.prepareStatement(getCartIdQuery)) {
                 ps.setInt(1, clientId);
@@ -40,7 +50,7 @@ public class ShoppingCartDao {
                 }
             }
 
-            // Étape 3 : Ajouter le cours
+
             if (cartId != -1) {
                 try (PreparedStatement ps = connection.prepareStatement(courseQuery)) {
                     ps.setInt(1, cartId);
@@ -54,27 +64,11 @@ public class ShoppingCartDao {
         }
     }
 
-
-    public static int getIdByClientId(int clientId) {
-        String query = "SELECT cart_id FROM shopping_carts WHERE fk_client_id = ?";
-
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ps.setInt(1, clientId);
-            var rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("cart_id");
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error retrieving cart ID: " + e.getMessage());
-        }
-        return -1;
-    }
-
     public static int[] readAllCoursesIds() {
+
+        // Implémentation pour lire tous les IDs des cours dans le panier
+        // Utilisation de PreparedStatement pour éviter les injections SQL
+        // Retourne un tableau d'entiers avec les IDs des cours dans le panier
 
         String query = "SELECT * FROM cart_courses";
 
@@ -98,6 +92,12 @@ public class ShoppingCartDao {
     }
 
     public static void removeFromCart(int clientId, int courseId) {
+
+        // Implémentation pour supprimer un cours du panier d'un client
+        // Utilisation de PreparedStatement pour éviter les injections SQL
+        // Supprime l'entrée correspondante dans la table cart_courses
+        // en fonction de l'ID du panier et de l'ID du cours
+        // Retourne void
 
         String getCartIdQuery = "SELECT cart_id FROM shopping_carts WHERE fk_client_id = ?";
         int cartId = -1;

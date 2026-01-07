@@ -7,8 +7,7 @@ import dao.ClientDao;
 import dao.CourseDao;
 import dao.ShoppingCartDao;
 import models.Course;
-import models.Cart;
-import java.util.ArrayList;
+
 
 public class Main {
 

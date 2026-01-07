@@ -16,7 +16,6 @@ public class Course {
         this.price = price;
     }
 
-
     // Getters
     public String getName() {
         return name;

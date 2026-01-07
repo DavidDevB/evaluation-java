@@ -68,7 +68,19 @@ public class AddressDao {
     }
 
     public int saveOrGetExisting(String street, String city, String country, int postalCode) {
+
+        // Étapes :
         // 1. Vérifier si l'adresse existe
+        // 2. Si elle n'existe pas, la créer
+        // Retourne l'ID de l'adresse existante ou nouvellement créée
+        // Affiche des messages dans la console pour indiquer l'action effectuée
+        // Utilisation de PreparedStatement pour éviter les injections SQL
+        // Retourne l'ID de l'adresse
+        // ou -1 en cas d'erreur
+        // Utilisation de PreparedStatement pour éviter les injections SQL
+        // Retourne l'ID de l'adresse
+        // ou -1 en cas d'erreur.
+
         Integer existingId = findIdByAddress(street, city, country, postalCode);
 
         if (existingId != null) {
@@ -76,12 +88,17 @@ public class AddressDao {
             return existingId;
         }
 
-        // 2. Si elle n'existe pas, la créer
         System.out.println("➕ Création d'une nouvelle adresse...");
         return save(street, city, country, postalCode);
     }
 
     public Address read(int addressId) {
+
+        // Implémentation pour lire une adresse par son ID depuis la base de données
+        // Utilisation de PreparedStatement pour éviter les injections SQL
+        // Retourne null si l'adresse n'est pas trouvée
+        // @return Address ou null
+
         String query = "SELECT * FROM addresses WHERE address_id = ?";
 
         try (Connection connection = DBConnection.getConnection();
