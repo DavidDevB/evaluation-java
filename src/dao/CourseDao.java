@@ -86,4 +86,24 @@ public class CourseDao {
         }
         return null;
     }
+
+    public int getIdByName(String name) {
+
+        String query = "SELECT id FROM courses WHERE name = ?";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
+
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("course_id");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error getting course ID: " + e.getMessage());
+        }
+        return -1;
+    }
 }
