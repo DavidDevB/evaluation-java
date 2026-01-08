@@ -9,9 +9,11 @@
 ### Instructions pour exécuter l'application
 1. Clonez le dépôt ou téléchargez les fichiers source.
 2. Ouvrez le projet dans votre IDE ou éditeur de texte préféré.
-3. Compilez les fichiers Java.
-4. Exécutez la classe principale `Main.java`.
-5. Suivez les instructions affichées dans la console pour interagir avec l'application.
+3. Télécharger le fichier .sql
+4. Importer le fichier .sql à la base de donnée MYSQL de votre choix.
+5. Compilez les fichiers Java.
+6. Exécutez la classe principale `Main.java`.
+7. Suivez les instructions affichées dans la console pour interagir avec l'application.
 
 ### Fonctionnalités
 - Affichage de la liste des formations disponibles.
