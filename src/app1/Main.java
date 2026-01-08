@@ -14,10 +14,14 @@ public class Main {
         System.out.println("Welcome Stranger! Here are all the in-person courses we offer:");
         System.out.println("----------------------------");
         while (true) {
-            System.out.println("Would you like to see all the in-person or online courses? Or just search for a keyword?");
+            System.out.println("Would you like to see all the 'in-person' or 'online' courses? Or just search for a 'keyword'? (type the corresponding word. Type 'no' to leave.):");
             Scanner scanner = new Scanner(System.in);
             String choice = scanner.nextLine().trim().toLowerCase();
 
+            if (choice.equals("no")) {
+                System.out.println("Goodbye!");
+                break;
+            }
 
             CourseDao courseDao = new CourseDao();
             List<Course> allCourses = courseDao.readAll();
